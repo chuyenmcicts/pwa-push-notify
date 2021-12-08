@@ -7,16 +7,16 @@
         dark
         class="text-left"
       >
-        Get our free app. It won't take up space on your phone and also works offline!
+        Cài đặt ứng dụng
         
         <template v-slot:actions>
-          <v-btn text @click="dismiss">Dismiss</v-btn>
-          <v-btn text @click="install">Install</v-btn>
+          <v-btn text @click="dismiss">Từ chối</v-btn>
+          <v-btn text @click="install">Cài đặt</v-btn>
         </template>
       </v-banner>
 <div class="pa-4 text-center">
         <img alt="Vue logo" src="./assets/logo.png" />
-        <h1>Customize Your Vue.js PWA Installation</h1>
+        <h1>Demo PWA Push Notify</h1>
       </div>
     </v-app>
   </div>

@@ -3,6 +3,7 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import vuetify from "./plugins/vuetify";
 import * as firebase from "firebase/app";
+import { getMessaging, getToken } from "firebase/messaging";
 
 var config = {
   apiKey: "AIzaSyCJBUGyljws_Wv7imEGoXMfok-Ul6zprt0",
@@ -15,25 +16,29 @@ var config = {
 }; // 4. Get Firebase Configuration
 firebase.initializeApp(config);
 
-const messaging = firebase.messaging();
-
-messaging.usePublicVapidKey(
-  "BKIjp3rmX3KeAgI6H1QVs6reOZFTDgS0Ww5_mg8akLdAYF0Qhugmzv-j2EGJRIeE99UzvMgTO78cMv9wmKbBjHo"
-); // 1. Generate a new key pair
-
-// Request Permission of Notifications
-messaging
-  .requestPermission()
-  .then(() => {
-    console.log("Notification permission granted.");
-
-    // Get Token
-    messaging.getToken().then((token) => {
-      console.log(token);
-    });
+// Get registration token. Initially this makes a network call, once retrieved
+// subsequent calls to getToken will return from cache.
+const messaging = getMessaging();
+getToken(messaging, {
+  vapidKey:
+    "BKIjp3rmX3KeAgI6H1QVs6reOZFTDgS0Ww5_mg8akLdAYF0Qhugmzv-j2EGJRIeE99UzvMgTO78cMv9wmKbBjHo",
+})
+  .then((currentToken) => {
+    if (currentToken) {
+      // Send the token to your server and update the UI if necessary
+      // ...
+      console.log(currentToken);
+    } else {
+      // Show permission request UI
+      console.log(
+        "No registration token available. Request permission to generate one."
+      );
+      // ...
+    }
   })
   .catch((err) => {
-    console.log("Unable to get permission to notify.", err);
+    console.log("An error occurred while retrieving token. ", err);
+    // ...
   });
 
 Vue.config.productionTip = false;
